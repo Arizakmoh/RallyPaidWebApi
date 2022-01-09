@@ -12,7 +12,7 @@ namespace WebUI.Features.Cars
         public ActionResult<List<Car>> Getcars()
         {
             var cars = new List<Car>();
-
+            
             var car1 = new Car
             {
                 TeamName = "Mohamed",

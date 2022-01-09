@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Domain.Entity;
 
 namespace WebUI.Features.Cars
@@ -18,9 +14,9 @@ namespace WebUI.Features.Cars
             var Motorbike = new List<Motorbikes>();
             var Motorbikes1 = new Motorbikes
             {
-                TeamName="Team B",
-                 Speed = 210,
-                 MulfuctionChance = 2.0
+                TeamName = "Team B",
+                Speed = 210,
+                MulfuctionChance = 2.0
             };
             var Motorbikes2 = new Motorbikes
             {
@@ -30,7 +26,7 @@ namespace WebUI.Features.Cars
             };
             Motorbike.Add(Motorbikes1);
             Motorbike.Add(Motorbikes2);
-            
+
             return Ok(Motorbike);
         }
 
@@ -45,7 +41,6 @@ namespace WebUI.Features.Cars
                 Speed = 210,
                 MulfuctionChance = 2.0
             };
-
             return Ok(Motorbikes1);
         }
 
@@ -71,7 +66,6 @@ namespace WebUI.Features.Cars
                 Speed = motorbike.Speed,
                 MulfuctionChance = motorbike.MulfuctionChance
             };
-
             return UpdateMotorbikes;
         }
 
@@ -82,6 +76,5 @@ namespace WebUI.Features.Cars
         {
             return Ok($"car with id {Id} is succcessully deleted");
         }
-
     }
 }

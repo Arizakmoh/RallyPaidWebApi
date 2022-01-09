@@ -1,20 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Domain.Entity;
+using System.Net;
+using System.Net.Http;
+using System.Web;
+
 
 namespace WebUI.Features.Cars
 {
     [Route("api/Motorbikes")]
     [ApiController]
     public class MotorbikeController : ControllerBase
-    {
+    { 
         [HttpGet]
         public ActionResult<List<Motorbikes>> GetMotorbikes()
         {
+
+
             var Motorbike = new List<Motorbikes>();
             var Motorbikes1 = new Motorbikes
             {
-                TeamName = "Team B",
+                 
+            TeamName = "Team B",
                 Speed = 210,
                 MulfuctionChance = 2.0
             };

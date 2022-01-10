@@ -1,6 +1,8 @@
 ﻿using Domain.Entity;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WebUI.Features.Cars
 {
@@ -8,77 +10,77 @@ namespace WebUI.Features.Cars
     [ApiController]
     public class CarController : ControllerBase
     {
+        private readonly ApplicaitonDbContext _Context;
+
+        public CarController(ApplicaitonDbContext context)
+        {
+            _Context = context;
+        }
+
         [HttpGet]
         public ActionResult<List<Car>> Getcars()
         {
-            var cars = new List<Car>();
-            var car1 = new Car
-            {
-                TeamName = "Mohamed",
-                Speed = 200,
-                MulfuctionChance = 0.2
-            };
-            var car2 = new Car
-            {
-                TeamName = "Ashraf",
-                Speed = 90,
-                MulfuctionChance = 0.3
-            };
-            cars.Add(car1);
-            cars.Add(car2);
-
+            var cars = _Context.Cars.ToList();
             return Ok(cars);
         }
 
         [HttpGet]
-        [Route("{Id}")]
-        public ActionResult<List<Car>> Getcars(int id)
+        [Route("{id}")]
+        public ActionResult<Car> Getcars(int id)
         {
-            var cars = new List<Car>();
-            var car1 = new Car
-            {
-                TeamName = "Team B",
-                Speed = 100,
-                MulfuctionChance = 0.2
-            };
+            var Car = _Context.Cars.FirstOrDefault(x => x.Id == id);
 
-            return Ok(car1);
+            if (Car == null)
+                return BadRequest($"Car with Id : {id} hasn't been found");
+            else
+                return Ok(Car);
         }
 
         [HttpPost]
         public ActionResult<Car> CreateCar(Car car)
         {
-            var newcar = new Car
-            {
-                Id = car.Id,
-                TeamName = car.TeamName,
-                Speed = car.Speed,
-                MulfuctionChance = car.MulfuctionChance
-            };
+            _Context.Add(car);
+            _Context.SaveChanges();
+            //var newcar = new Car
+            //{
+            //    Id = car.Id,
+            //    TeamName = car.TeamName,
+            //    Speed = car.Speed,
+            //    MulfuctionChance = car.MulfuctionChance
+            //};
 
-            return newcar;
+            return car;
         }
         
         [HttpPut]
         [Route("{id}")]
         public ActionResult<Car> UpdateCar(Car car)
         {
-            var updateCar = new Car
-            {
-                Id = car.Id,
-                TeamName = car.TeamName,
-                Speed = car.Speed,
-                MulfuctionChance = car.MulfuctionChance
-            };
+            var dbCar = _Context.Cars.FirstOrDefault(x => x.Id == car.Id);
 
-            return updateCar;
+            if (dbCar == null)
+                return BadRequest($"Car with Id : {car.Id} hasn't been found");
+
+            dbCar.TeamName = car.TeamName;
+            dbCar.Speed = car.Speed;
+            dbCar.MulfuctionChance = car.MulfuctionChance;
+            _Context.SaveChanges();
+
+            return dbCar;
         }
         [HttpDelete]
         [Route("{id}")]
 
-        public ActionResult deleteCar(int Id)
+        public ActionResult deleteCar(int id)
         {
-            return Ok($"car with id {Id} is succcessully deleted");
+            var dbCar = _Context.Cars.FirstOrDefault(x => x.Id == id);
+
+            if (dbCar == null)
+                return BadRequest($"Car with Id : {id} hasn't been found");
+
+            _Context.Remove(dbCar);
+            _Context.SaveChanges();
+            return Ok($"car with id {id} is succcessully deleted");
         }
     }
 }

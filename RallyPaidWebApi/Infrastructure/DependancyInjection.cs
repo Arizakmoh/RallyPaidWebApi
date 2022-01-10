@@ -9,10 +9,12 @@ namespace Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicaitonDbContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection"),
-           x => x.MigrationsAssembly(typeof(ApplicaitonDbContext).Assembly.FullName)));
+            services.AddDbContext<ApplicaitonDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("MoviesDbConnectionString")));
+
+           // services.AddDbContext<ApplicaitonDbContext>(options =>
+           // options.UseSqlServer(
+           //     configuration.GetConnectionString("DefaultConnection"),
+           //x => x.MigrationsAssembly(typeof(ApplicaitonDbContext).Assembly.FullName)));
 
             return services;
 
